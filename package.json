@@ -4,7 +4,7 @@
   "description": "",
   "main": "backend.js",
   "scripts": {
-    "devStart": "nodemon backend.js"
+    "devStart": "nodemon backend.js",
     "start": "node backend.js"
   },
   "author": "",
